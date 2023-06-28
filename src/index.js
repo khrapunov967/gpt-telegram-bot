@@ -1,31 +1,29 @@
 import { Telegraf } from "telegraf";
 import { message } from "telegraf/filters";
-import { Converter } from "./utils/audio-converter.js";
 import { openai } from "./services/openai.js";
 import "dotenv/config.js";
 
 const bot = new Telegraf(process.env.TELEGRAM_TOKEN);
 
-bot.on(message("voice"), async (ctx) => {
+bot.on(message("text"), async (ctx) => {
+    await ctx.reply("Подождите, формирую ответ...");
+
     try {
-        const fileLink = await ctx.telegram.getFileLink(ctx.message.voice.file_id)
-        const userId = String(ctx.message.from.id);
-
-        const oggPath = await Converter.createOgg(fileLink.href, userId);
-        const mp3Path = await Converter.oggToMp3(oggPath, userId);
-
-        const text = await openai.mp3ToText(mp3Path);
-        // const response = await openai.reply(text);
-
-        await ctx.reply(text);
+        const gptResponse = await openai.reply(ctx.message.text);
+        await ctx.reply(gptResponse);
 
     } catch (error) {
-        console.log(`[ERROR] Error while voice message: ${error.message}`)
+        await ctx.reply("Упс! Что-то пошло не так. Попробуйте спросить еще раз");
+        console.log(`[ERROR] Error while voice message: ${error.message}`);
     }
-})
+});
+
+bot.on(message("voice"), async (ctx) => {
+
+});
 
 bot.command("start", async (ctx) => {
-    await ctx.reply(JSON.stringify(ctx.message))
+    await ctx.reply("Привет, я - Chat GPT. Задавайте свои вопросы!");
 });
 
 bot.launch();

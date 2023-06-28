@@ -1,5 +1,4 @@
 import { Configuration, OpenAIApi } from "openai";
-import { createReadStream } from "fs";
 import "dotenv/config";
 
 class OpenAI {
@@ -9,27 +8,22 @@ class OpenAI {
         });
 
         this.openai = new OpenAIApi(configuration);
-    }
-
-    mp3ToText = async (mp3Path) => {
-        try {
-            const response = await this.openai.createTranscription(
-                createReadStream(mp3Path),
-                "whisper-1"
-            );
-
-            return response.data.text;
-
-        } catch (error) {
-            console.log(`[ERROR] Error while convert mp3 to text: ${error.message}`)
-        }
     };
 
     reply = async (text) => {
         try {
-            const response = await this.openai.createChatCompletion(text);
+            const response = await this.openai.createChatCompletion({
+                model: "gpt-3.5-turbo",
+                messages: [{
+                    "role": "user",
+                    "content": text
+                }]
+            });
+
+            return response.data.choices[0].message.content;
+
         } catch (error) {
-            
+            console.log(`[ERROR] Error while reply on user request: ${error.message}`);
         }
     }; 
 };
