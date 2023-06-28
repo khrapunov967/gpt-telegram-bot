@@ -5,6 +5,10 @@ import "dotenv/config.js";
 
 const bot = new Telegraf(process.env.TELEGRAM_TOKEN);
 
+bot.command("start", async (ctx) => {
+    await ctx.reply("Привет, я - Chat GPT. Задавайте свои вопросы!");
+});
+
 bot.on(message("text"), async (ctx) => {
     await ctx.reply("Подождите, формирую ответ...");
 
@@ -19,11 +23,12 @@ bot.on(message("text"), async (ctx) => {
 });
 
 bot.on(message("voice"), async (ctx) => {
+    try {
+        await ctx.reply("Я не могу обрабатывать голосовые сообщения!");
 
-});
-
-bot.command("start", async (ctx) => {
-    await ctx.reply("Привет, я - Chat GPT. Задавайте свои вопросы!");
+    } catch (error) {
+        console.log(`[ERROR] Error while voice message: ${error.message}`);
+    }
 });
 
 bot.launch();
