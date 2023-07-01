@@ -1,26 +1,33 @@
 {
-  "name": "gpt-telegram-bot",
+  "name": "openai-telegram-bot",
   "version": "1.0.0",
-  "description": "Chat GPT Telegram Bot",
+  "description": "Open AI Telegram Bot",
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon ./src/index.js",
-    "start": "node ./src/index.js"
+    "dev": "npx nodemon",
+    "build": "rimraf ./build && npx tsc",
+    "start": "node build/index",
+    "lint": "npx eslint ./src",
+    "format": "npx eslint ./src --fix"
   },
   "author": "Andrew Khrapunov",
   "license": "ISC",
   "devDependencies": {
-    "cross-env": "^7.0.3",
-    "nodemon": "^2.0.22"
+    "@types/express": "^4.17.17",
+    "@types/node": "^20.3.3",
+    "@typescript-eslint/eslint-plugin": "^5.60.1",
+    "@typescript-eslint/parser": "^5.60.1",
+    "eslint": "^8.44.0",
+    "nodemon": "^2.0.22",
+    "rimraf": "^5.0.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.1.6"
   },
   "dependencies": {
-    "@ffmpeg-installer/ffmpeg": "^1.1.0",
     "axios": "^1.4.0",
-    "config": "^3.3.9",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
-    "fluent-ffmpeg": "^2.1.2",
     "openai": "^3.3.0",
     "telegraf": "^4.12.2"
   }
