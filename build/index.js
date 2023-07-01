@@ -29,9 +29,8 @@ bot.on(message("voice"), async (ctx) => {
 });
 app.listen(PORT, () => {
     try {
-        bot.launch().then(() => {
-            console.log("Telegram Bot Launched");
-        });
+        bot.launch();
+        console.log("Telegram Bot Launched...");
     }
     catch (error) {
         process.exit(1);
