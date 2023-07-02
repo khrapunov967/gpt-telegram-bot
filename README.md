@@ -1,4 +1,4 @@
-# Chat-GPT Telegram Bot
+# Open AI Telegram Bot
 ### Try it right now: https://t.me/gpt4_free_telebot
 
 ## Stack
