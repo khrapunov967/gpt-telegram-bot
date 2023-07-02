@@ -26,4 +26,21 @@ export class OpenAI {
             console.log(`[GPT-ERROR] Error while Chat GPT reply on user request: ${error}`);
         }
     }; 
+
+    static generateImageByPrompt: types.generateImageByPromptFunction = async (prompt) => {
+        try {
+            const response = await openai.createImage({
+                prompt,
+                n: 1,
+                size: "1024x1024"
+            });
+
+            const url = response.data.data[0].url;
+
+            return url || "Sorry, could not generate image by your prompt";
+            
+        } catch (error) {
+            console.log(`[GENERATE-IMAGE-ERROR] Error while generate image on user prompt: ${error}`);
+        }
+    };
 }

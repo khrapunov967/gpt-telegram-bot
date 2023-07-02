@@ -1,23 +1,23 @@
 import { Telegraf } from "telegraf";
 import { message } from "telegraf/filters";
 import { OpenAI } from "./services/openai.js";
+import { start } from "./bot/controllers/gpt-controllers.js";
 import express from "express";
 import "dotenv/config.js";
+import { bot } from "./bot/bot.js";
 
-const bot = new Telegraf(process.env.TELEGRAM_TOKEN || "");
+// const bot = new Telegraf(process.env.TELEGRAM_TOKEN || "");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-bot.command("start", async (ctx) => {
-    await ctx.reply("Hello there. I'am Open AI Telegram Bot. How can I help you?");
-});
+// bot.command("start", start);
 
 bot.on(message("text"), async (ctx) => {
     await ctx.reply("Wait, let me think...");
 
     try {
-        const gptResponse = await OpenAI.chatGptReplyOn(ctx.message.text)
+        const gptResponse = await OpenAI.generateImageByPrompt(ctx.message.text)
         await ctx.reply(gptResponse || "Could not get response :^(");
 
     } catch (error) {
@@ -25,14 +25,14 @@ bot.on(message("text"), async (ctx) => {
     }
 });
 
-bot.on(message("voice"), async (ctx) => {
-    try {
-        await ctx.reply("Я не могу обрабатывать голосовые сообщения!");
+// bot.on(message("voice"), async (ctx) => {
+//     try {
+//         await ctx.reply("Я не могу обрабатывать голосовые сообщения!");
 
-    } catch (error) {
-        console.log(`[TELEGRAF-ERROR]: ${error}`);
-    }
-});
+//     } catch (error) {
+//         console.log(`[TELEGRAF-ERROR]: ${error}`);
+//     }
+// });
 
 app.listen(PORT, () => {
     try {
